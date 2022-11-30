@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Технологии{% endblock title %}
+{% block content %}
+<div class="px-4 py-5 my-5 text-center">
+  <img class="d-block mx-auto mb-4 rounded" src="{% static "img/tech.png" %}" alt="" width="100" height="100">
+  <h1 class="display-5 fw-bold">Технологии, которые я использую</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">Листай вниз!</p>
+  </div>
+</div>
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+    <div class="col-10 col-sm-8 col-lg-6">
+      <img src="{% static "img/python123.png" %}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="300" height="200" loading="lazy">
+    </div>
+    <div class="col-lg-6">
+      <h1 class="display-5 fw-bold lh-1 mb-3">Python</h1>
+      <p class="lead">Это язык компьютерного программирования, часто используемый для создания веб-сайтов и программного обеспечения, автоматизации задач и проведения анализа данных. </p>
+      <p class="lead">Лучший язык программирования на всём свете!!!</p>
+    </div>
+  </div>
+</div>
+<div class="container col-xxl-8 px-4 py-5">
+  <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+    <div class="col-lg-6">
+      <h1 class="display-5 fw-bold lh-1 mb-3">Django</h1>
+      <p class="lead">Высокоуровневый Python веб-фреймворк, который позволяет быстро создавать безопасные и поддерживаемые веб-сайты. Созданный опытными разработчиками, Django берёт на себя большую часть хлопот веб-разработки, поэтому вы можете сосредоточиться на написании своего веб-приложения без необходимости изобретать велосипед.</p>
+    </div>
+    <div class="col-10 col-sm-8 col-lg-6">
+      <img src="{% static "img/django.png" %}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="300" height="200" loading="lazy">
+    </div>
+  </div>
+</div>
+{% endblock content %}

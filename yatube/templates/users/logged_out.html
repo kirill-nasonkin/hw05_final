@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}
+  Вы вышли из системы
+{% endblock title %}
+{% block content %}
+  {% include "includes/password_card_header.html" with card_header="Выход" %}
+  <p>Вы вышли из своей учётной записи. Ждём вас снова!</p>
+  {% include "includes/password_card_header_closing_tags.html" %}
+{% endblock content %}

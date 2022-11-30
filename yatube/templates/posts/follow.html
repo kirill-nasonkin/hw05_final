@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}
+  Посты авторов, на которых вы подписаны
+{% endblock title %}
+{% block content %}
+  <div class="container py-5">
+    {% include "posts/includes/switcher.html" %}
+    <article>
+      {% if page_obj %}
+        {% for post in page_obj %}
+          {% include "includes/card.html" %}
+        {% endfor %}
+      {% else %}
+        {{ no_follows }}
+      {% endif %}
+    </article>
+  </div>
+  {% include "posts/includes/paginator.html" %}
+{% endblock content %}
