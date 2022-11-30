@@ -354,4 +354,6 @@ class PostsFollowTests(TestCase):
         self.assertIn(
             PostsFollowTests.post, response_follower.context["page_obj"]
         )
-        self.assertNotIn("page_obj", response_not_follower.context)
+        self.assertNotIn(
+            PostsFollowTests.post, response_not_follower.context["page_obj"]
+        )

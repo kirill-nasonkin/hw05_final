@@ -121,15 +121,8 @@ def follow_index(request):
     user = request.user
     authors = user.follower.values_list("author", flat=True)
     post_list = Post.objects.filter(author__id__in=authors)
-    if post_list:
-        page_obj = create_paginator(request, post_list, POSTS_PER_PAGE)
-        context = {"page_obj": page_obj, "to_show_groups": True}
-    else:
-        context = {
-            "no_follows": (
-                "У вас ещё нет подписок. Скорее подпишитесь на кого-то!"
-            )
-        }
+    page_obj = create_paginator(request, post_list, POSTS_PER_PAGE)
+    context = {"page_obj": page_obj, "to_show_groups": True}
     return render(request, "posts/follow.html", context)
 
 
@@ -137,7 +130,8 @@ def follow_index(request):
 def profile_follow(request, username):
     user = request.user
     author = get_object_or_404(User, username=username)
-    Follow.objects.get_or_create(user=user, author=author)
+    if user != author:
+        Follow.objects.get_or_create(user=user, author=author)
     return redirect("posts:profile", username=username)
 
 
