@@ -23,12 +23,11 @@ class PostForm(forms.ModelForm):
             "image": "Изображение",
         }
 
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = (
-            "text",
-        )
+        fields = ("text",)
         help_texts = {
             "text": _("Здесь введите текст вашего комментария"),
         }
