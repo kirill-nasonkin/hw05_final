@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import cache_page
 
-from .constants import POSTS_PER_PAGE
+from .constants import PAGE_CACHE_INTERVAL, POSTS_PER_PAGE
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post, User
 
@@ -15,7 +15,7 @@ def create_paginator(request, post_list, posts_per_page):
     return page_obj
 
 
-@cache_page(timeout=20, key_prefix="index_page")
+@cache_page(timeout=PAGE_CACHE_INTERVAL, key_prefix="index_page")
 def index(request):
     post_list = Post.objects.all()
     page_obj = create_paginator(request, post_list, POSTS_PER_PAGE)
@@ -44,11 +44,10 @@ def profile(request, username):
     post_list = author.posts.all()
     page_obj = create_paginator(request, post_list, POSTS_PER_PAGE)
 
-    following = False
-    if request.user.is_authenticated:
-        following = Follow.objects.filter(
-            user=request.user, author=author
-        ).exists()
+    following = (
+        request.user.is_authenticated
+        and Follow.objects.filter(user=request.user, author=author).exists()
+    )
 
     context = {
         "page_obj": page_obj,
@@ -119,8 +118,7 @@ def add_comment(request, post_id):
 @login_required
 def follow_index(request):
     user = request.user
-    authors = user.follower.values_list("author", flat=True)
-    post_list = Post.objects.filter(author__id__in=authors)
+    post_list = Post.objects.filter(author__following__user=user)
     page_obj = create_paginator(request, post_list, POSTS_PER_PAGE)
     context = {"page_obj": page_obj, "to_show_groups": True}
     return render(request, "posts/follow.html", context)

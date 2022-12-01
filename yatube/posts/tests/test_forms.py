@@ -3,6 +3,7 @@ import tempfile
 from http import HTTPStatus
 
 from django.conf import settings
+from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
@@ -42,6 +43,7 @@ class PostFormTests(TestCase):
         )
 
     def setUp(self):
+        cache.clear()
         self.post = Post.objects.create(
             text="Тестовый текст",
             author=PostFormTests.user,
