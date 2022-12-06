@@ -17,7 +17,9 @@ def create_paginator(request, post_list, posts_per_page):
 
 @cache_page(timeout=PAGE_CACHE_INTERVAL, key_prefix="index_page")
 def index(request):
-    post_list = Post.objects.all()
+    post_list = (
+        Post.objects.all().select_related("author", "group")
+    )
     page_obj = create_paginator(request, post_list, POSTS_PER_PAGE)
 
     context = {
@@ -29,7 +31,7 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    post_list = group.posts.all()
+    post_list = group.posts.all().select_related("author")
     page_obj = create_paginator(request, post_list, POSTS_PER_PAGE)
 
     context = {
@@ -41,7 +43,7 @@ def group_posts(request, slug):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    post_list = author.posts.all()
+    post_list = author.posts.all().select_related("group")
     page_obj = create_paginator(request, post_list, POSTS_PER_PAGE)
 
     following = (
@@ -62,7 +64,7 @@ def profile(request, username):
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     form = CommentForm()
-    comments = post.comments.all()
+    comments = post.comments.all().select_related("author")
     context = {
         "comments": comments,
         "form": form,
@@ -118,7 +120,10 @@ def add_comment(request, post_id):
 @login_required
 def follow_index(request):
     user = request.user
-    post_list = Post.objects.filter(author__following__user=user)
+    post_list = (
+        Post.objects.filter(author__following__user=user)
+        .select_related("group", "author")
+    )
     page_obj = create_paginator(request, post_list, POSTS_PER_PAGE)
     context = {"page_obj": page_obj, "to_show_groups": True}
     return render(request, "posts/follow.html", context)
